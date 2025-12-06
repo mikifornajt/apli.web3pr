@@ -1,0 +1,72 @@
+@page
+@model CW5OCENA.Pages.IndexModel
+@using CW5OCENA.Models
+@{
+    ViewData["Title"] = "Dodaj książkę";
+}
+
+<div class="text-center my-5">
+    <h1 class="display-5 fw-bold text-primary">Formularz książki (POST)</h1>
+</div>
+
+<form method="post" class="row g-4 needs-validation" novalidate>
+    <div class="col-md-6">
+        <label class="form-label">Autor</label>
+        <input type="text" class="form-control" asp-for="Book.Author" required />
+        <div class="invalid-feedback">Podaj autora</div>
+    </div>
+
+    <div class="col-md-6">
+        <label class="form-label">Tytuł książki</label>
+        <input type="text" class="form-control" asp-for="Book.Title" required />
+        <div class="invalid-feedback">Podaj tytuł</div>
+    </div>
+
+    <div class="col-md-6">
+        <label class="form-label">Rok wydania</label>
+        <input type="number" class="form-control" asp-for="Book.Year" min="1000" max="2025" required />
+        <div class="invalid-feedback">Rok od 1000 do 2025</div>
+    </div>
+
+    <div class="col-md-6">
+        <label class="form-label">Gatunek</label>
+        <select class="form-select" asp-for="Book.Genre" required>
+            <option value="">– wybierz –</option>
+            <option>Fantastyka</option>
+            <option>Kryminał</option>
+            <option>Romans</option>
+            <option>Horror</option>
+            <option>Biografia</option>
+            <option>Historia</option>
+            <option>Inne</option>
+        </select>
+        <div class="invalid-feedback">Wybierz gatunek</div>
+    </div>
+
+    <div class="col-12 text-center">
+        <button type="submit" class="btn btn-primary btn-lg px-5">Dodaj książkę</button>
+    </div>
+</form>
+
+@if (Model.Message != null)
+{
+    <div class="alert alert-success text-center mt-5 fs-4">
+        @Model.Message
+    </div>
+}
+
+<script>
+    (() => {
+      'use strict';
+      const forms = document.querySelectorAll('.needs-validation');
+      Array.from(forms).forEach(form => {
+        form.addEventListener('submit', event => {
+          if (!form.checkValidity()) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          form.classList.add('was-validated');
+        }, false);
+      });
+    })();
+</script>

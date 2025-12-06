@@ -1,0 +1,45 @@
+@page
+@model KsiázkiNWD.Pages.BookGetModel
+@{
+    ViewData["Title"] = "Dodaj książkę (GET)";
+}
+
+<h2>Dodaj książkę – metoda GET</h2>
+
+@if (!string.IsNullOrEmpty(Model.Message))
+{
+    <div class="alert alert-info">@Model.Message</div>
+}
+
+<form method="get">
+    <div class="mb-3">
+        <label>Autor</label>
+        <input type="text" class="form-control" name="Author" required />
+    </div>
+
+    <div class="mb-3">
+        <label>Tytuł książki</label>
+        <input type="text" class="form-control" name="Title" required />
+    </div>
+
+    <div class="mb-3">
+        <label>Rok wydania</label>
+        <input type="number" class="form-control" name="Year" required />
+    </div>
+
+    <div class="mb-3">
+        <label>Gatunek</label>
+        <select class="form-select" name="Genre" required>
+            <option value="">-- wybierz --</option>
+            <option>Fantastyka</option>
+            <option>Kryminal</option>
+            <option>Romans</option>
+            <option>Horror</option>
+            <option>Biografia</option>
+            <option>Historyczna</option>
+            <option>Inne</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-success">Wyślij GET</button>
+</form>

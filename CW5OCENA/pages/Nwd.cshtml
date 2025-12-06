@@ -1,0 +1,59 @@
+@page
+@model CW5OCENA.Pages.NwdModel
+@{
+    ViewData["Title"] = "NWD – Największy wspólny dzielnik";
+}
+
+<div class="text-center my-5">
+    <h1 class="display-5 fw-bold text-warning">Oblicz NWD</h1>
+</div>
+
+<form method="post" class="row g-4 needs-validation" novalidate>
+    <div class="col-md-4">
+        <label class="form-label">Pierwsza liczba</label>
+        <input type="number" class="form-control" asp-for="A" min="1" required />
+        <div class="invalid-feedback">Podaj liczbę ≥ 1</div>
+    </div>
+
+    <div class="col-md-4">
+        <label class="form-label">Druga liczba</label>
+        <input type="number" class="form-control" asp-for="B" min="1" required />
+        <div class="invalid-feedback">Podaj liczbę ≥ 1</div>
+    </div>
+
+    <div class="col-md-4">
+        <label class="form-label">Metoda</label>
+        <select class="form-select" asp-for="Method" required>
+            <option value="rek">Rekurencyjnie</option>
+            <option value="iter">Iteracyjnie</option>
+        </select>
+    </div>
+
+    <div class="col-12 text-center">
+        <button type="submit" class="btn btn-warning btn-lg px-5">Oblicz NWD</button>
+    </div>
+</form>
+
+@if (Model.Result > 0)
+{
+    <div class="alert alert-info text-center mt-5 fs-3">
+        NWD(@Model.A, @Model.B) = <strong>@Model.Result</strong><br />
+        <small>metoda: @(Model.Method == "rek" ? "rekurencyjna" : "iteracyjna")</small>
+    </div>
+}
+
+<script>
+    (() => {
+      'use strict';
+      const forms = document.querySelectorAll('.needs-validation');
+      Array.from(forms).forEach(form => {
+        form.addEventListener('submit', event => {
+          if (!form.checkValidity()) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          form.classList.add('was-validated');
+        }, false);
+      });
+    })();
+</script>

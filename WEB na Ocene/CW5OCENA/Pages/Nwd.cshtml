@@ -1,0 +1,83 @@
+@page
+@model CW5OCENA.Pages.NwdModel
+@{
+    ViewData["Title"] = "NWD";
+}
+
+<h2 class="text-center mb-4 text-info">Kalkulator NWD</h2>
+
+<div class="card shadow">
+    <div class="card-body">
+        <form method="post" id="formNwd">
+            <div class="row">
+                <div class="col-md-6 mb-2">
+                    <label>Liczba A</label>
+                    <input type="number" class="form-control" name="a" min="1" required />
+                </div>
+                <div class="col-md-6 mb-2">
+                    <label>Liczba B</label>
+                    <input type="number" class="form-control" name="b" min="1" required />
+                </div>
+            </div>
+            
+            <div class="mb-2">
+                <label>Metoda</label>
+                <select class="form-select" name="metoda">
+                    <option value="iter">Iteracyjnie</option>
+                    <option value="rek">Rekurencyjnie</option>
+                </select>
+            </div>
+
+            <div class="card mb-2 bg-light border-secondary">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label>Od</label>
+                            <input type="number" class="form-control" id="od" value="1" />
+                        </div>
+                        <div class="col-md-3">
+                            <label>Do</label>
+                            <input type="number" class="form-control" id="do" value="100" />
+                        </div>
+                        <div class="col-md-6">
+                            <label>&nbsp;</label>
+                            <button type="button" class="btn btn-secondary w-100" onclick="losuj()">Losuj liczby</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <button type="submit" class="btn btn-info w-100">Oblicz</button>
+        </form>
+        
+        @if (Model.Wynik > 0)
+        {
+            <div class="alert alert-info mt-3">
+                NWD(@Model.A, @Model.B) = @Model.Wynik
+            </div>
+        }
+    </div>
+</div>
+
+<script>
+    function losuj() {
+        var od = parseInt(document.getElementById('od').value);
+        var doDo = parseInt(document.getElementById('do').value);
+        
+        var a = Math.floor(Math.random() * (doDo - od + 1)) + od;
+        var b = Math.floor(Math.random() * (doDo - od + 1)) + od;
+        
+        document.querySelector('input[name="a"]').value = a;
+        document.querySelector('input[name="b"]').value = b;
+    }
+    
+    document.getElementById('formNwd').addEventListener('submit', function(e) {
+        var a = parseInt(document.querySelector('input[name="a"]').value);
+        var b = parseInt(document.querySelector('input[name="b"]').value);
+        
+        if (a < 1 || b < 1 || isNaN(a) || isNaN(b)) {
+            alert('Liczby musza byc wieksze od 0');
+            e.preventDefault();
+        }
+    });
+</script>

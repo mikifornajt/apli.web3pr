@@ -1,24 +1,178 @@
+// === Program.cs ===
 var builder = WebApplication.CreateBuilder(args);
-
 builder.Services.AddControllersWithViews();
-
 var app = builder.Build();
-
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
-
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
-
 app.UseAuthorization();
-
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Pojazdy}/{action=Index}/{id?}");
-
 app.Run();
+
+
+// === appsettings.json ===
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*"
+}
+
+
+// === Models/Pojazd.cs ===
+namespace ProjektPojazdy.Models
+{
+    public class Pojazd
+    {
+        public int Id { get; set; }
+        public string Marka { get; set; }
+        public string Model { get; set; }
+        public int Rocznik { get; set; }
+        public string Kolor { get; set; }
+        public string Stan { get; set; }
+    }
+}
+
+
+// === Controllers/PojazdyController.cs ===
+using Microsoft.AspNetCore.Mvc;
+using ProjektPojazdy.Models;
+using System.Collections.Generic;
+
+namespace ProjektPojazdy.Controllers
+{
+    public class PojazdyController : Controller
+    {
+        public IActionResult Index()
+        {
+            var pojazdy = new List<Pojazd>
+            {
+                new Pojazd { Id = 1, Marka = "Fiat", Model = "Punto", Rocznik = 2010, Kolor = "Czerwony", Stan = "używany" },
+                new Pojazd { Id = 2, Marka = "Opel", Model = "Astra", Rocznik = 2015, Kolor = "Czarny", Stan = "używany" },
+                new Pojazd { Id = 3, Marka = "Toyota", Model = "Corolla", Rocznik = 2022, Kolor = "Biały", Stan = "nowy" }
+            };
+            return View(pojazdy);
+        }
+    }
+}
+
+
+@using ProjektPojazdy
+@using ProjektPojazdy.Models
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+
+@{
+    Layout = "_Layout";
+}
+
+
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Portal Motoryzacyjny</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    @RenderBody()
+</body>
+</html>
+
+
+@model IEnumerable<ProjektPojazdy.Models.Pojazd>
+
+<div id="baner">
+    <h1>Portal Motoryzacyjny</h1>
+</div>
+
+<div id="lewy">
+    <h2>Oferta sprzedaży</h2>
+    <ul>
+        <li>Samochody osobowe</li>
+        <li>Motocykle</li>
+        <li>Części zamienne</li>
+    </ul>
+    <a href="kwerendy.txt">Pobierz kwerendy</a>
+</div>
+
+<div id="prawy">
+    <h2>Nasze Pojazdy</h2>
+    <table border="1">
+        <tr>
+            <th>MARKA</th>
+            <th>MODEL</th>
+            <th>ROCZNIK</th>
+            <th>KOLOR</th>
+        </tr>
+        @foreach (var p in Model)
+        {
+            <tr>
+                <td>@p.Marka</td>
+                <td>@p.Model</td>
+                <td>@p.Rocznik</td>
+                <td>@p.Kolor</td>
+            </tr>
+        }
+    </table>
+</div>
+
+<div id="stopka">
+    <p>Autor: Twój PESEL</p>
+</div>
+
+
+/* === wwwroot/css/site.css === */
+body {
+    font-family: Verdana;
+}
+#baner {
+    background-color: #3e4d3e;
+    color: white;
+    height: 100px;
+    text-align: center;
+    padding-top: 20px;
+}
+#lewy {
+    background-color: #6d8d6d;
+    width: 30%;
+    height: 500px;
+    float: left;
+}
+#prawy {
+    background-color: #bdcfbd;
+    width: 70%;
+    height: 500px;
+    float: left;
+}
+#stopka {
+    background-color: #3e4d3e;
+    color: white;
+    clear: both;
+    text-align: center;
+}
+table {
+    border: 2px solid green;
+    margin: 20px;
+}
+th {
+    background-color: green;
+    color: white;
+}
+
+
+-- === wwwroot/kwerendy.txt ===
+SELECT marka, model FROM samochody;
+SELECT rocznik FROM samochody WHERE marka = 'Fiat';
+SELECT marka, model FROM samochody WHERE stan = 'sprawny';
